@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+1#!/usr/bin/env python
 #coding=utf-8
 
 import sys
@@ -9,58 +9,55 @@ class Combine:
         self.file2 = file2
         self.dic1 = {}
         self.dic2 = {}
-        self.dic3 = {}
 
     def doCombine(self):
-        f1 = open(self.file1, 'r')
+        f = open(self.file1, 'r')
         while True:
-            line1 = f1.readline()
-            if len(line1) == 0:
+            line = f.readline()
+            if len(line) == 0:
                 break;
             else:
-                pos = line1.find(':')
-                user_ = line1[:pos]
-                hash_ = line1[pos+1:]
+                pos = line.find(':')
+                user_ = line[:pos]
+                hash_ = line[pos+1:]
                 self.dic1[user_] = hash_
-        #print str(self.table1)
-        f1.close()
+        #print str(self.dic1)
+        f.close()
         
-        f2 = open(self.file2, 'r')
+        f = open(self.file2, 'r')
         while True:
-            line2 = f2.readline()
+            line = f.readline()
             
-            if len(line2) == 0:
+            if len(line) == 0:
                 break;
             else:
-                pos2 = line2.find(':')
-                user2_ = line2[:pos2]
-                hash2_ = line2[pos2+1:]
-                self.dic2[user2_] = hash2_
-        #print str(self.table2)
-        f2.close()
+                pos = line.find(':')
+                user_ = line[:pos]
+                hash_ = line[pos+1:]
+                self.dic2[user_] = hash_
+        #print str(self.dic2)
+        f.close()
         
         for key, value in self.dic1.items():
             #print key, 'corresponds to', value
             if self.dic2.has_key(key):
                 hash_combine = value.replace("\n", "") + ':' + self.dic2[key]
-                self.dic3[key] = hash_combine
-            else:
-                self.dic3[key] = value
-                
-        for key, value in self.dic2.items():
-            if not self.dic3.has_key(key):
-                self.dic3[key] = value
+                self.dic1[key] = hash_combine
         
-        for key, value in self.dic3.items():
+        for key, value in self.dic2.items():
+            if not self.dic1.has_key(key):
+                self.dic1[key] = value
+        
+        for key, value in self.dic1.items():
             if not value.endswith('\n'):
-                self.dic3[key] =  value + "\n"
+                self.dic1[key] =  value + "\n"
                 
         #print str(self.dic3)
-        f3 = open("combine.txt", 'w')
-        for key, value in self.dic3.items():
-            f3.write(key+':'+value)
+        f = open("combine.txt", 'w')
+        for key, value in self.dic1.items():
+            f.write(key+':'+value)
             
-        f3.close() 
+        f.close() 
         
         
 if __name__ == '__main__':
